@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Светлая тема — премиальный финтех: тёплый белый фон, глубокий индиго-акцент */
+  --bg: 247 248 251;
+  --surface: 255 255 255;
+  --elevated: 255 255 255;
+  --border: 226 230 237;
+  --ink: 17 24 39;
+  --muted: 90 100 118;
+  --faint: 140 149 166;
+  --brand: 67 76 214;
+  --brand-soft: 235 237 253;
+  --brand-ink: 40 46 150;
+  --positive: 22 149 96;
+  --warning: 197 132 24;
+  --danger: 208 60 60;
+  color-scheme: light;
+}
+
+.dark {
+  /* Тёмная тема — не инверсия, а отдельно выверенные тона */
+  --bg: 13 16 24;
+  --surface: 21 25 36;
+  --elevated: 27 32 45;
+  --border: 42 49 66;
+  --ink: 233 237 245;
+  --muted: 155 165 184;
+  --faint: 110 120 140;
+  --brand: 129 140 248;
+  --brand-soft: 34 39 66;
+  --brand-ink: 179 187 252;
+  --positive: 52 199 136;
+  --warning: 224 168 74;
+  --danger: 240 113 113;
+  color-scheme: dark;
+}
+
+* {
+  border-color: rgb(var(--border));
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: rgb(var(--bg));
+  color: rgb(var(--ink));
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Табличные цифры — суммы выравниваются по разрядам */
+.nums {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--border));
+  border-radius: 999px;
+  border: 3px solid rgb(var(--bg));
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--faint));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
