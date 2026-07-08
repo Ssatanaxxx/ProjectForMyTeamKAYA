@@ -3,6 +3,16 @@
   "plugins": ["react", "typescript", "oxc"],
   "rules": {
     "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
+    "react/only-export-components": ["warn", { "allowConstantExport": true }],
+    // "typescript/no-explicit-any":"off",
+    // "typescript/no-non-null-assertion": "off",
+    // "typescript/no-unused-vars": "off",
+    // "no-console": "off",
+    // "no-debugger": "off",
+    // "no-var": "off",
+    // "prefer-const": "off",
+    // "oxc/missing-throw": "off",
+    // "oxc/uninvoked-array-callback": "off",
+    // "oxc/double-comparisons": "off"
   }
 }
