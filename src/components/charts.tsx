@@ -12,8 +12,8 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { useTheme } from '../theme'
 import { tengeShort, tenge } from '../lib/format'
+import useTheme from '../providers/use-theme'
 
 // Палитра графиков — согласована со светлой/тёмной темой.
 function usePalette() {
