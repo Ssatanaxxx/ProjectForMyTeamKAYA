@@ -1,130 +1,92 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
+  Sparkles,
+  Wallet,
+  ShieldCheck,
+  LineChart,
+  Building2,
+  UserCog,
   ArrowRight,
   ArrowLeft,
-  Building2,
-  KeyRound,
-  LineChart,
-  ShieldCheck,
-  Sparkles,
-  UserCog,
-  Wallet,
 } from "lucide-react";
-import { UILogo } from "../components/UI/UILogo/UILogo";
-import { ThemeToggle } from "../components/ThemeToggle";
-import { UIButton, UICard, UICardBody, UIField, UIInput} from '../components/UI/index'
-
-import { useToast } from "../components/Toast";
-import { repo } from "../lib/repo";
-import { setSession, type Session } from "../lib/session";
+import { AuthLayout } from "../features/AuthLayout";
+import { StepShell } from "../features/StepShell";
+import { CreateCompanyForm } from "../components/Fields/CreateCompanyForm";
+import { JoinCompanyForm } from "../components/Fields/JoinCompanyForm";
+import { RegisterForm } from "../components/Fields//RegisterForm";
 import type { Company, Role } from "../lib/types";
+import type { Session } from "../lib/session";
+import { UIButton, UICard, UICardBody } from "../components/UI/index";
 
 type Step = "landing" | "create" | "join" | "role" | "register";
 
-export function AuthFlow({ onDone }: { onDone: (s: Session) => void }) {
+export function AuthFlow({ onDone }: { onDone: (session: Session) => void }) {
   const [step, setStep] = useState<Step>("landing");
   const [company, setCompany] = useState<Company | null>(null);
   const [role, setRole] = useState<Role>("economist");
 
   return (
-    <div className="relative min-h-svh overflow-hidden bg-bg">
-      <BackdropGlow />
-      <header className="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-5 py-5">
-        <UILogo />
-        <ThemeToggle />
-      </header>
-
-      <main className="relative z-10 mx-auto max-w-6xl px-5 pb-16">
-        <AnimatePresence mode="wait">
-          {step === "landing" && (
-            <StepShell key="landing">
-              <Landing
-                onCreate={() => setStep("create")}
-                onJoin={() => setStep("join")}
-              />
-            </StepShell>
-          )}
-
-          {step === "create" && (
-            <StepShell key="create">
-              <CreateCompany
-                onBack={() => setStep("landing")}
-                onCreated={(c) => {
-                  setCompany(c);
-                  setStep("role");
-                }}
-              />
-            </StepShell>
-          )}
-
-          {step === "join" && (
-            <StepShell key="join">
-              <JoinCompany
-                onBack={() => setStep("landing")}
-                onJoined={(c) => {
-                  setCompany(c);
-                  setStep("role");
-                }}
-              />
-            </StepShell>
-          )}
-
-          {step === "role" && company && (
-            <StepShell key="role">
-              <RoleSelect
-                company={company}
-                onBack={() => setStep("landing")}
-                onPick={(r) => {
-                  setRole(r);
-                  setStep("register");
-                }}
-              />
-            </StepShell>
-          )}
-
-          {step === "register" && company && (
-            <StepShell key="register">
-              <Register
-                company={company}
-                role={role}
-                onBack={() => setStep("role")}
-                onDone={onDone}
-              />
-            </StepShell>
-          )}
-        </AnimatePresence>
-      </main>
-    </div>
+    <AuthLayout>
+      <AnimatePresence mode="wait">
+        {step === "landing" && (
+          <StepShell key="landing">
+            <Landing
+              onCreate={() => setStep("create")}
+              onJoin={() => setStep("join")}
+            />
+          </StepShell>
+        )}
+        {step === "create" && (
+          <StepShell key="create">
+            <CreateCompanyForm
+              onBack={() => setStep("landing")}
+              onCreated={(c) => {
+                setCompany(c);
+                setStep("role");
+              }}
+            />
+          </StepShell>
+        )}
+        {step === "join" && (
+          <StepShell key="join">
+            <JoinCompanyForm
+              onBack={() => setStep("landing")}
+              onJoined={(c) => {
+                setCompany(c);
+                setStep("role");
+              }}
+            />
+          </StepShell>
+        )}
+        {step === "role" && company && (
+          <StepShell key="role">
+            <RoleSelect
+              company={company}
+              onBack={() => setStep("landing")}
+              onPick={(r) => {
+                setRole(r);
+                setStep("register");
+              }}
+            />
+          </StepShell>
+        )}
+        {step === "register" && company && (
+          <StepShell key="register">
+            <RegisterForm
+              company={company}
+              role={role}
+              onBack={() => setStep("role")}
+              onDone={onDone}
+            />
+          </StepShell>
+        )}
+      </AnimatePresence>
+    </AuthLayout>
   );
 }
 
-/* ------------------------- анимированная обёртка шага ------------------------- */
-
-function StepShell({ children }: { children: React.ReactNode }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 14 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
-      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-function BackdropGlow() {
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div className="absolute -left-40 -top-40 h-[440px] w-[440px] rounded-full bg-brand/20 blur-[120px]" />
-      <div className="absolute -right-40 top-20 h-[380px] w-[380px] rounded-full bg-brand/10 blur-[120px]" />
-    </div>
-  );
-}
-
-/* -------------------------------- Лендинг -------------------------------- */
-
+// Компонент лендинга с описанием и кнопками
 function Landing({
   onCreate,
   onJoin,
@@ -144,18 +106,15 @@ function Landing({
           <Sparkles size={14} className="text-brand" />
           Планирование бюджета для экономистов
         </motion.div>
-
         <h1 className="font-display text-[42px] font-extrabold leading-[1.05] tracking-tight text-ink sm:text-[54px]">
           Бюджет компании —<br />
           <span className="text-brand">под контролем</span>, а не в таблицах
         </h1>
-
         <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-muted">
           Budgetly собирает заявки департаментов в одном месте, сам распределяет
           лимиты и проверяет каждую статью расходов. Экономист видит отклонения
           сразу и решает: одобрить или вернуть на доработку.
         </p>
-
         <div className="mt-8 flex flex-wrap gap-3">
           <UIButton size="lg" onClick={onCreate}>
             Создать компанию
@@ -165,7 +124,6 @@ function Landing({
             Войти по коду
           </UIButton>
         </div>
-
         <div className="mt-9 flex flex-wrap gap-x-7 gap-y-3 text-[13px] text-muted">
           <Feature
             icon={<Wallet size={15} />}
@@ -178,12 +136,10 @@ function Landing({
           <Feature icon={<LineChart size={15} />} text="Формулы и графики" />
         </div>
       </div>
-
       <HeroPanel />
     </div>
   );
 }
-
 function Feature({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
     <span className="inline-flex items-center gap-2">
@@ -192,9 +148,6 @@ function Feature({ icon, text }: { icon: React.ReactNode; text: string }) {
     </span>
   );
 }
-
-// «Как это работает» — три шага продукта. Никаких выдуманных сумм: экран честно
-// объясняет процесс. Единственная витринная анимация на входе — появление шагов.
 const STEPS = [
   {
     icon: <Wallet size={20} />,
@@ -212,7 +165,6 @@ const STEPS = [
     text: "Система подсвечивает превышения и считает формулы. Экономист одобряет или возвращает.",
   },
 ];
-
 function HeroPanel() {
   return (
     <motion.div
@@ -265,192 +217,6 @@ function HeroPanel() {
     </motion.div>
   );
 }
-
-/* ----------------------------- Создать компанию ----------------------------- */
-
-function AuthCard({
-  title,
-  subtitle,
-  onBack,
-  children,
-}: {
-  title: string;
-  subtitle: string;
-  onBack: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="mx-auto max-w-md pt-6 lg:pt-14">
-      <button
-        onClick={onBack}
-        className="mb-5 inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-ink"
-      >
-        <ArrowLeft size={16} /> Назад
-      </button>
-      <UICard className="shadow-pop">
-        <UICardBody className="space-y-5">
-          <div>
-            <h2 className="font-display text-2xl font-bold text-ink">
-              {title}
-            </h2>
-            <p className="mt-1 text-sm text-muted">{subtitle}</p>
-          </div>
-          {children}
-        </UICardBody>
-      </UICard>
-    </div>
-  );
-}
-
-function CreateCompany({
-  onBack,
-  onCreated,
-}: {
-  onBack: () => void;
-  onCreated: (c: Company) => void;
-}) {
-  const { push } = useToast();
-  const [name, setName] = useState("");
-  const [code, setCode] = useState("");
-  const [busy, setBusy] = useState(false);
-
-  const submit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name.trim() || !code.trim()) return;
-    setBusy(true);
-    try {
-      const company = await repo.createCompany({
-        name: name.trim(),
-        access_code: code.trim(),
-      });
-      push({
-        kind: "success",
-        title: "Компания создана",
-        body: `Код доступа: ${company.access_code}`,
-      });
-      onCreated(company);
-    } catch (err) {
-      push({
-        kind: "warning",
-        title: "Не удалось создать",
-        body: (err as Error).message,
-      });
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  return (
-    <AuthCard
-      title="Создание компании"
-      subtitle="Название и код доступа. По коду в компанию войдут экономист и руководители департаментов."
-      onBack={onBack}
-    >
-      <form onSubmit={submit} className="space-y-4">
-        <UIField label="Название компании">
-          <UIInput
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Напр. АО «Астана Инвест»"
-            autoFocus
-          />
-        </UIField>
-        <UIField
-          label="Код доступа"
-          hint="Придумайте секретный код — это ключ к вашей компании."
-        >
-          <div className="relative">
-            <KeyRound
-              size={16}
-              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-faint"
-            />
-            <UIInput
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              placeholder="astana-2026"
-              className="pl-9"
-            />
-          </div>
-        </UIField>
-        <UIButton type="submit" size="lg" className="w-full" loading={busy}>
-          Продолжить
-          <ArrowRight size={18} />
-        </UIButton>
-      </form>
-    </AuthCard>
-  );
-}
-
-function JoinCompany({
-  onBack,
-  onJoined,
-}: {
-  onBack: () => void;
-  onJoined: (c: Company) => void;
-}) {
-  const { push } = useToast();
-  const [code, setCode] = useState("");
-  const [busy, setBusy] = useState(false);
-
-  const submit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!code.trim()) return;
-    setBusy(true);
-    try {
-      const company = await repo.getCompanyByCode(code.trim());
-      if (!company) {
-        push({
-          kind: "warning",
-          title: "Компания не найдена",
-          body: "Проверьте код доступа.",
-        });
-        return;
-      }
-      onJoined(company);
-    } catch (err) {
-      push({
-        kind: "warning",
-        title: "Ошибка входа",
-        body: (err as Error).message,
-      });
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  return (
-    <AuthCard
-      title="Вход по коду"
-      subtitle="Введите код доступа вашей компании."
-      onBack={onBack}
-    >
-      <form onSubmit={submit} className="space-y-4">
-        <UIField label="Код доступа">
-          <div className="relative">
-            <KeyRound
-              size={16}
-              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-faint"
-            />
-            <UIInput
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              placeholder="astana-2026"
-              className="pl-9"
-              autoFocus
-            />
-          </div>
-        </UIField>
-        <UIButton type="submit" size="lg" className="w-full" loading={busy}>
-          Войти
-          <ArrowRight size={18} />
-        </UIButton>
-      </form>
-    </AuthCard>
-  );
-}
-
-/* ------------------------------- Выбор роли ------------------------------- */
-
 function RoleSelect({
   company,
   onBack,
@@ -491,7 +257,6 @@ function RoleSelect({
     </div>
   );
 }
-
 function RoleCard({
   icon,
   title,
@@ -521,88 +286,5 @@ function RoleCard({
         />
       </span>
     </button>
-  );
-}
-
-/* ------------------------------ Регистрация ------------------------------ */
-
-function Register({
-  company,
-  role,
-  onBack,
-  onDone,
-}: {
-  company: Company;
-  role: Role;
-  onBack: () => void;
-  onDone: (s: Session) => void;
-}) {
-  const { push } = useToast();
-  const [name, setName] = useState("");
-  const [pin, setPin] = useState("");
-  const [busy, setBusy] = useState(false);
-
-  const submit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name.trim() || pin.trim().length < 4) return;
-    setBusy(true);
-    try {
-      const member = await repo.createMember({
-        company_id: company.id,
-        role,
-        full_name: name.trim(),
-        pin: pin.trim(),
-      });
-      const session: Session = { company, member };
-      setSession(session);
-      onDone(session);
-    } catch (err) {
-      push({
-        kind: "warning",
-        title: "Ошибка регистрации",
-        body: (err as Error).message,
-      });
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  return (
-    <AuthCard
-      title="Регистрация"
-      subtitle={
-        role === "economist"
-          ? "Профиль экономиста компании"
-          : "Профиль руководителя департамента"
-      }
-      onBack={onBack}
-    >
-      <form onSubmit={submit} className="space-y-4">
-        <UIField label="Имя и фамилия">
-          <UIInput
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Айдана Серикова"
-            autoFocus
-          />
-        </UIField>
-        <UIField
-          label="PIN-код"
-          hint="Не менее 4 символов. Понадобится для входа в профиль."
-        >
-          <UIInput
-            value={pin}
-            onChange={(e) => setPin(e.target.value)}
-            placeholder="••••"
-            type="password"
-            inputMode="numeric"
-          />
-        </UIField>
-        <UIButton type="submit" size="lg" className="w-full" loading={busy}>
-          Войти в систему
-          <ArrowRight size={18} />
-        </UIButton>
-      </form>
-    </AuthCard>
   );
 }
