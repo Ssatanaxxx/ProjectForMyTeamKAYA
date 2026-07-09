@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { motion } from 'motion/react'
-import { Logo } from './Logo'
+import { Logo } from './UI/UILogo/UILogo'
 
 // Приветственный экран после входа — вторая (и последняя) витринная анимация.
 // Показывается один раз, затем автоматически исчезает.

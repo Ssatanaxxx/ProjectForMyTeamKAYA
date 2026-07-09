@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import type { CompanySummary } from "../../lib/aggregate";
-import { Card, CardBody } from "../../components/ui";
+import { UICard, UICardBody } from "../../components/UI/index";
 import { EmptyChart, PlanFactBar, ShareDonut } from "../charts";
 
 export const DeptChartsGrid = ({
@@ -28,8 +28,8 @@ export const DeptChartsGrid = ({
 
   return (
     <div className="grid gap-5 lg:grid-cols-2">
-      <Card>
-        <CardBody>
+      <UICard>
+        <UICardBody>
           <h3 className="mb-4 font-display text-base font-bold text-ink">
             Лимит и заявка по департаментам
           </h3>
@@ -38,16 +38,16 @@ export const DeptChartsGrid = ({
           ) : (
             <EmptyChart>Пока нет департаментов</EmptyChart>
           )}
-        </CardBody>
-      </Card>
-      <Card>
-        <CardBody>
+        </UICardBody>
+      </UICard>
+      <UICard>
+        <UICardBody>
           <h3 className="mb-4 font-display text-base font-bold text-ink">
             Доли департаментов в заявках
           </h3>
           <ShareDonut data={donutData} />
-        </CardBody>
-      </Card>
+        </UICardBody>
+      </UICard>
     </div>
   );
 };

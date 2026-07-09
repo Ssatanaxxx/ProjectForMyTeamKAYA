@@ -11,7 +11,7 @@ import {
   UserCog,
   Wallet,
 } from "lucide-react";
-import { Logo } from "../components/Logo";
+import { Logo } from "../components/UI/UILogo/UILogo";
 import { ThemeToggle } from "../components/ThemeToggle";
 import { UIButton, UICard, UICardBody, UIField, UIInput} from '../components/UI/index'
 

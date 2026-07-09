@@ -1,6 +1,6 @@
 import type { CompanySummary } from "../../lib/aggregate";
 import { percent, tenge } from "../../lib/format";
-import { Card, CardBody } from "../ui";
+import { UICard, UICardBody } from "../UI/index";
 import DepartmentUtilizationCell from "./DepartmentUtilizationCell";
 
 export const DepartmentsTable = ({
@@ -9,8 +9,8 @@ export const DepartmentsTable = ({
   depts: CompanySummary["depts"];
 }) => {
   return (
-    <Card>
-      <CardBody>
+    <UICard>
+      <UICardBody>
         <h3 className="mb-4 font-display text-base font-bold text-ink">
           Департаменты
         </h3>
@@ -67,8 +67,8 @@ export const DepartmentsTable = ({
             </tbody>
           </table>
         </div>
-      </CardBody>
-    </Card>
+      </UICardBody>
+    </UICard>
   );
 };
 

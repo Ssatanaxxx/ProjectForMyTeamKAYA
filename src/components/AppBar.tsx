@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Bell, LogOut } from 'lucide-react'
-import { Logo } from './Logo'
+import { Logo } from './UI/UILogo/UILogo'
 import { ThemeToggle } from './ThemeToggle'
 import { cn } from '../lib/cn'
 import { timeAgo } from '../lib/format'
