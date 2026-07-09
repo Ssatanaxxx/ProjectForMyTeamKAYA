@@ -12,7 +12,8 @@ import {
 } from 'lucide-react'
 import { AppBar, type Tab } from '../components/AppBar'
 import { Modal } from '../components/Modal'
-import { Badge, Button, Card, CardBody, Field, Input, Progress } from '../components/ui'
+import { UIBadge, UIButton, UICard, UICardBody, UIField, UIInput, UIProgress } from '../components/UI/index'
+
 import { useToast } from '../components/Toast'
 import { Analytics } from './Analytics'
 import { RequestReview } from './RequestReview'
@@ -122,8 +123,8 @@ function Lobby({
   return (
     <div className="space-y-6">
       {/* сводка периода */}
-      <Card>
-        <CardBody className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <UICard>
+        <UICardBody className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
             <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-soft text-brand-ink">
               <CircleDollarSign size={22} />
@@ -147,21 +148,21 @@ function Lobby({
           </div>
           <div className="flex flex-wrap gap-2.5">
             {period && summary.depts.length > 0 && (
-              <Button variant="secondary" onClick={() => setLimitsOpen(true)}>
+              <UIButton variant="secondary" onClick={() => setLimitsOpen(true)}>
                 <SlidersHorizontal size={16} /> Лимиты
-              </Button>
+              </UIButton>
             )}
-            <Button variant="secondary" onClick={() => setSetupOpen(true)}>
+            <UIButton variant="secondary" onClick={() => setSetupOpen(true)}>
               <Settings2 size={16} /> {period ? 'Настроить период' : 'Задать бюджет'}
-            </Button>
+            </UIButton>
             {period && (
-              <Button onClick={() => requestBudget(null)}>
+              <UIButton onClick={() => requestBudget(null)}>
                 <Send size={16} /> Запросить бюджет у всех
-              </Button>
+              </UIButton>
             )}
           </div>
-        </CardBody>
-      </Card>
+        </UICardBody>
+      </UICard>
 
       {/* панели департаментов */}
       <div>
@@ -206,8 +207,8 @@ function Lobby({
 
 function EmptyLobby() {
   return (
-    <Card>
-      <CardBody className="flex flex-col items-center gap-3 py-12 text-center">
+    <UICard>
+      <UICardBody className="flex flex-col items-center gap-3 py-12 text-center">
         <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-soft text-brand-ink">
           <Building2 size={26} />
         </span>
@@ -218,8 +219,8 @@ function EmptyLobby() {
             войдут и назовут свой департамент, панели появятся здесь автоматически.
           </p>
         </div>
-      </CardBody>
-    </Card>
+      </UICardBody>
+    </UICard>
   )
 }
 
@@ -244,8 +245,8 @@ function DeptPanel({
 }) {
   const status = view.status === 'none' ? 'draft' : view.status
   return (
-    <Card className="flex flex-col">
-      <CardBody className="flex flex-1 flex-col gap-4">
+    <UICard className="flex flex-col">
+      <UICardBody className="flex flex-1 flex-col gap-4">
         <div className="flex items-start justify-between gap-2">
           <div>
             <p className="font-display text-base font-bold text-ink">{view.department.name}</p>
@@ -253,7 +254,7 @@ function DeptPanel({
               <UserCheck size={12} /> Руководитель в системе
             </p>
           </div>
-          <Badge tone={STATUS_TONE[status]}>{STATUS_LABEL[status]}</Badge>
+          <UIBadge tone={STATUS_TONE[status]}>{STATUS_LABEL[status]}</UIBadge>
         </div>
 
         <div className="grid grid-cols-2 gap-3 text-sm">
@@ -274,7 +275,7 @@ function DeptPanel({
             <span>Исполнение лимита</span>
             <span className="nums">{percent(view.utilization)}</span>
           </div>
-          <Progress
+          <UIProgress
             value={view.utilization}
             tone={view.overLimit ? 'danger' : view.utilization > 85 ? 'warning' : 'brand'}
           />
@@ -282,29 +283,29 @@ function DeptPanel({
 
         <div className="mt-auto flex gap-2">
           {view.status === 'submitted' ? (
-            <Button size="sm" className="flex-1" onClick={() => onReview(view)}>
+            <UIButton size="sm" className="flex-1" onClick={() => onReview(view)}>
               <FileCheck2 size={15} /> Разобрать заявку
-            </Button>
+            </UIButton>
           ) : (
             <>
-              <Button
+              <UIButton
                 size="sm"
                 variant="secondary"
                 className="flex-1"
                 onClick={() => onRequest(view.department.id, view.department.name)}
               >
                 <Send size={15} /> Запросить
-              </Button>
+              </UIButton>
               {view.items.length > 0 && (
-                <Button size="sm" variant="ghost" onClick={() => onReview(view)}>
+                <UIButton size="sm" variant="ghost" onClick={() => onReview(view)}>
                   Открыть
-                </Button>
+                </UIButton>
               )}
             </>
           )}
         </div>
-      </CardBody>
-    </Card>
+      </UICardBody>
+    </UICard>
   )
 }
 
@@ -366,24 +367,24 @@ function BudgetSetup({
 
   return (
     <form onSubmit={submit} className="space-y-4">
-      <Field label="Название периода">
-        <Input value={title} onChange={(e) => setTitle(e.target.value)} />
-      </Field>
+      <UIField label="Название периода">
+        <UIInput value={title} onChange={(e) => setTitle(e.target.value)} />
+      </UIField>
       <div className="grid grid-cols-2 gap-3">
-        <Field label="Начало">
-          <Input type="date" value={from} onChange={(e) => setFrom(e.target.value)} />
-        </Field>
-        <Field label="Конец">
-          <Input type="date" value={to} onChange={(e) => setTo(e.target.value)} />
-        </Field>
+        <UIField label="Начало">
+          <UIInput type="date" value={from} onChange={(e) => setFrom(e.target.value)} />
+        </UIField>
+        <UIField label="Конец">
+          <UIInput type="date" value={to} onChange={(e) => setTo(e.target.value)} />
+        </UIField>
       </div>
       <div className="grid grid-cols-2 gap-3">
-        <Field label="Общий бюджет, ₸">
-          <Input type="number" value={total} onChange={(e) => setTotal(e.target.value)} className="nums" />
-        </Field>
-        <Field label="Департаментов" hint="Ожидаемое число">
-          <Input type="number" min={1} value={planned} onChange={(e) => setPlanned(e.target.value)} className="nums" />
-        </Field>
+        <UIField label="Общий бюджет, ₸">
+          <UIInput type="number" value={total} onChange={(e) => setTotal(e.target.value)} className="nums" />
+        </UIField>
+        <UIField label="Департаментов" hint="Ожидаемое число">
+          <UIInput type="number" min={1} value={planned} onChange={(e) => setPlanned(e.target.value)} className="nums" />
+        </UIField>
       </div>
 
       <div className="rounded-xl bg-brand-soft px-4 py-3 text-[13px] text-brand-ink">
@@ -391,9 +392,9 @@ function BudgetSetup({
         <span className="nums font-bold">{tenge(perDept)}</span>
       </div>
 
-      <Button type="submit" size="lg" className="w-full" loading={busy}>
+      <UIButton type="submit" size="lg" className="w-full" loading={busy}>
         Сохранить и распределить лимиты
-      </Button>
+      </UIButton>
     </form>
   )
 }
@@ -451,7 +452,7 @@ function LimitsModal({
         {data.departments.map((d) => (
           <div key={d.id} className="flex items-center gap-3">
             <span className="w-40 shrink-0 truncate text-sm font-medium text-ink">{d.name}</span>
-            <Input
+            <UIInput
               type="number"
               value={limits[d.id] ?? '0'}
               onChange={(e) => setLimits((prev) => ({ ...prev, [d.id]: e.target.value }))}
@@ -469,8 +470,8 @@ function LimitsModal({
         <span>{Math.abs(diff) < 1 ? 'Сходится с бюджетом' : `Остаток: ${tenge(diff)}`}</span>
       </div>
       <div className="mt-5 flex gap-3">
-        <Button variant="secondary" onClick={equal}>Разделить поровну</Button>
-        <Button className="ml-auto" onClick={save} loading={busy}>Сохранить</Button>
+        <UIButton variant="secondary" onClick={equal}>Разделить поровну</UIButton>
+        <UIButton className="ml-auto" onClick={save} loading={busy}>Сохранить</UIButton>
       </div>
     </Modal>
   )

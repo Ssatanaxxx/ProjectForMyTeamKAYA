@@ -10,7 +10,7 @@ import {
   Trash2,
 } from 'lucide-react'
 import { AppBar, type Tab } from '../components/AppBar'
-import { Badge, Button, Card, CardBody, Field, Input, Progress, Select, Textarea } from '../components/ui'
+import { UIBadge, UIButton, UICard, UICardBody, UIField, UIInput, UIProgress, UISelect, UITextarea } from '../components/UI/index'
 import { useToast } from '../components/Toast'
 import { useCompany } from '../lib/useCompany'
 import { useNotifications } from '../lib/hooks'
@@ -126,8 +126,8 @@ function NameDepartment({
 
   return (
     <div className="mx-auto max-w-md pt-8">
-      <Card className="shadow-pop">
-        <CardBody className="space-y-5">
+      <UICard className="shadow-pop">
+        <UICardBody className="space-y-5">
           <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-soft text-brand-ink">
             <Building2 size={22} />
           </span>
@@ -138,15 +138,15 @@ function NameDepartment({
             </p>
           </div>
           <form onSubmit={submit} className="space-y-4">
-            <Field label="Название департамента">
-              <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Напр. Маркетинг" autoFocus />
-            </Field>
-            <Button type="submit" size="lg" className="w-full" loading={busy}>
+            <UIField label="Название департамента">
+              <UIInput value={name} onChange={(e) => setName(e.target.value)} placeholder="Напр. Маркетинг" autoFocus />
+            </UIField>
+            <UIButton type="submit" size="lg" className="w-full" loading={busy}>
               Создать департамент
-            </Button>
+            </UIButton>
           </form>
-        </CardBody>
-      </Card>
+        </UICardBody>
+      </UICard>
     </div>
   )
 }
@@ -274,7 +274,7 @@ function RequestArea({
           <h1 className="font-display text-2xl font-bold text-ink">{department.name}</h1>
           <p className="text-sm text-muted">Заявка на период «{data.period.title}»</p>
         </div>
-        <Badge tone={STATUS_TONE[request.status]}>{STATUS_LABEL[request.status]}</Badge>
+        <UIBadge tone={STATUS_TONE[request.status]}>{STATUS_LABEL[request.status]}</UIBadge>
       </div>
 
       {/* решение экономиста */}
@@ -295,8 +295,8 @@ function RequestArea({
       )}
 
       {/* индикатор лимита */}
-      <Card>
-        <CardBody className="space-y-3">
+      <UICard>
+        <UICardBody className="space-y-3">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
               <p className="text-[11px] text-faint">Автолимит департамента</p>
@@ -310,7 +310,7 @@ function RequestArea({
               </p>
             </div>
           </div>
-          <Progress value={util} tone={over ? 'danger' : util > 85 ? 'warning' : 'brand'} />
+          <UIProgress value={util} tone={over ? 'danger' : util > 85 ? 'warning' : 'brand'} />
           {over ? (
             <p className="flex items-center gap-1.5 text-[13px] text-danger">
               <AlertTriangle size={14} /> Превышение лимита на {tenge(total - department.auto_limit)} — экономист
@@ -319,18 +319,18 @@ function RequestArea({
           ) : (
             <p className="text-[13px] text-muted">Использовано {percent(util)} лимита.</p>
           )}
-        </CardBody>
-      </Card>
+        </UICardBody>
+      </UICard>
 
       {/* таблица позиций */}
-      <Card>
-        <CardBody>
+      <UICard>
+        <UICardBody>
           <div className="mb-3 flex items-center justify-between">
             <h3 className="font-display text-base font-bold text-ink">Статьи расходов</h3>
             {editable && (
-              <Button size="sm" variant="secondary" onClick={addRow}>
+              <UIButton size="sm" variant="secondary" onClick={addRow}>
                 <Plus size={15} /> Добавить статью
-              </Button>
+              </UIButton>
             )}
           </div>
 
@@ -350,8 +350,8 @@ function RequestArea({
               <p className="py-6 text-center text-sm text-faint">Нет позиций. Добавьте первую статью расходов.</p>
             )}
           </div>
-        </CardBody>
-      </Card>
+        </UICardBody>
+      </UICard>
 
       {/* действия */}
       {editable && (
@@ -361,12 +361,12 @@ function RequestArea({
             <p className="nums font-display text-lg font-bold text-ink">{tenge(total)}</p>
           </div>
           <div className="ml-auto flex gap-2.5">
-            <Button variant="secondary" onClick={saveDraft} loading={busy}>
+            <UIButton variant="secondary" onClick={saveDraft} loading={busy}>
               Сохранить черновик
-            </Button>
-            <Button variant="positive" onClick={submit} loading={busy}>
+            </UIButton>
+            <UIButton variant="positive" onClick={submit} loading={busy}>
               <Send size={16} /> Отправить экономисту
-            </Button>
+            </UIButton>
           </div>
         </div>
       )}
@@ -394,23 +394,23 @@ function ItemRow({
     <div className="rounded-xl border border-border bg-elevated/30 p-3.5">
       <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
         <div className="grid gap-3 sm:grid-cols-2">
-          <Field label={`Позиция ${index}`}>
-            <Input
+          <UIField label={`Позиция ${index}`}>
+            <UIInput
               value={item.name}
               disabled={!editable}
               onChange={(e) => onChange({ name: e.target.value })}
               placeholder="Наименование"
             />
-          </Field>
-          <Field label="Категория">
-            <Select value={item.category} disabled={!editable} onChange={(e) => onChange({ category: e.target.value })}>
+          </UIField>
+          <UIField label="Категория">
+            <UISelect value={item.category} disabled={!editable} onChange={(e) => onChange({ category: e.target.value })}>
               {CATEGORIES.map((c) => (
                 <option key={c} value={c}>
                   {c}
                 </option>
               ))}
-            </Select>
-          </Field>
+            </UISelect>
+          </UIField>
         </div>
         <div className="flex items-end justify-between gap-3 sm:flex-col sm:items-end">
           <div className="text-right">
@@ -429,8 +429,8 @@ function ItemRow({
         </div>
       </div>
       <div className="mt-3 grid gap-3 sm:grid-cols-[120px_160px_1fr]">
-        <Field label="Количество">
-          <Input
+        <UIField label="Количество">
+          <UIInput
             type="number"
             min={0}
             value={item.quantity}
@@ -438,9 +438,9 @@ function ItemRow({
             onChange={(e) => onChange({ quantity: Number(e.target.value) })}
             className="nums"
           />
-        </Field>
-        <Field label="Цена за ед., ₸">
-          <Input
+        </UIField>
+        <UIField label="Цена за ед., ₸">
+          <UIInput
             type="number"
             min={0}
             value={item.unit_cost}
@@ -448,16 +448,16 @@ function ItemRow({
             onChange={(e) => onChange({ unit_cost: Number(e.target.value) })}
             className="nums"
           />
-        </Field>
-        <Field label="Обоснование" hint="Зачем это нужно компании">
-          <Textarea
+        </UIField>
+        <UIField label="Обоснование" hint="Зачем это нужно компании">
+          <UITextarea
             value={item.justification}
             disabled={!editable}
             onChange={(e) => onChange({ justification: e.target.value })}
             placeholder="Например: замена устаревших рабочих станций дизайнеров."
             className="min-h-[40px]"
           />
-        </Field>
+        </UIField>
       </div>
     </div>
   )
@@ -465,8 +465,8 @@ function ItemRow({
 
 function WaitingBudget({ departmentName }: { departmentName: string }) {
   return (
-    <Card className="mx-auto max-w-md">
-      <CardBody className="flex flex-col items-center gap-3 py-12 text-center">
+    <UICard className="mx-auto max-w-md">
+      <UICardBody className="flex flex-col items-center gap-3 py-12 text-center">
         <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-soft text-brand-ink">
           <Clock size={26} />
         </span>
@@ -477,8 +477,8 @@ function WaitingBudget({ departmentName }: { departmentName: string }) {
             заявки — вы получите уведомление.
           </p>
         </div>
-      </CardBody>
-    </Card>
+      </UICardBody>
+    </UICard>
   )
 }
 

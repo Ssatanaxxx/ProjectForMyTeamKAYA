@@ -8,7 +8,7 @@ import {
   XCircle,
 } from 'lucide-react'
 import { Modal } from '../components/Modal'
-import { Badge, Button, Progress, Textarea } from '../components/ui'
+import { UIBadge, UIButton, UIProgress, UITextarea } from '../components/UI/index'
 import { useToast } from '../components/Toast'
 import { repo } from '../lib/repo'
 import { analyzeRequest, type Flag } from '../lib/advisor'
@@ -106,13 +106,13 @@ export function RequestReview({
       <div className="max-h-[74vh] space-y-5 overflow-y-auto pr-1">
         {/* шапка со статусом */}
         <div className="flex flex-wrap items-center gap-3">
-          <Badge tone={STATUS_TONE[view.status === 'none' ? 'draft' : view.status]}>
+          <UIBadge tone={STATUS_TONE[view.status === 'none' ? 'draft' : view.status]}>
             {STATUS_LABEL[view.status === 'none' ? 'draft' : view.status]}
-          </Badge>
+          </UIBadge>
           {view.overLimit && (
-            <Badge tone="danger">
+            <UIBadge tone="danger">
               <AlertTriangle size={12} /> Превышение лимита
-            </Badge>
+            </UIBadge>
           )}
           <span className="ml-auto text-sm text-muted">
             Лимит департамента: <span className="nums font-semibold text-ink">{tenge(view.limit)}</span>
@@ -141,7 +141,7 @@ export function RequestReview({
             <span>Использование лимита</span>
             <span className="nums">{percent(view.utilization)}</span>
           </div>
-          <Progress value={view.utilization} tone={view.overLimit ? 'danger' : view.utilization > 85 ? 'warning' : 'brand'} />
+          <UIProgress value={view.utilization} tone={view.overLimit ? 'danger' : view.utilization > 85 ? 'warning' : 'brand'} />
         </div>
 
         {/* таблица позиций */}
@@ -221,9 +221,9 @@ export function RequestReview({
               <h4 className="text-sm font-semibold text-ink">Разбор ассистента</h4>
             </div>
             {isAiReady ? (
-              <Button size="sm" variant="secondary" onClick={runAi} loading={aiBusy} disabled={view.items.length === 0}>
+              <UIButton size="sm" variant="secondary" onClick={runAi} loading={aiBusy} disabled={view.items.length === 0}>
                 {ai ? 'Обновить' : 'Разобрать'}
-              </Button>
+              </UIButton>
             ) : (
               <span className="text-xs text-faint">ИИ не подключён</span>
             )}
@@ -265,7 +265,7 @@ export function RequestReview({
             <label className="mb-1.5 block text-[13px] font-medium text-muted">
               Комментарий департаменту {`(обязателен при возврате)`}
             </label>
-            <Textarea
+            <UITextarea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder="Например: обоснуйте закупку серверов и снизьте количество лицензий."
@@ -275,15 +275,15 @@ export function RequestReview({
       </div>
 
       <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-border pt-4">
-        <Button variant="danger" onClick={() => decide('revision')} loading={busy}>
+        <UIButton variant="danger" onClick={() => decide('revision')} loading={busy}>
           <XCircle size={17} /> Вернуть на доработку
-        </Button>
-        <Button variant="positive" onClick={() => decide('approved')} loading={busy}>
+        </UIButton>
+        <UIButton variant="positive" onClick={() => decide('approved')} loading={busy}>
           <CheckCircle2 size={17} /> Одобрить
-        </Button>
-        <Button variant="ghost" onClick={onClose} className="ml-auto">
+        </UIButton>
+        <UIButton variant="ghost" onClick={onClose} className="ml-auto">
           Закрыть
-        </Button>
+        </UIButton>
       </div>
     </Modal>
   )
