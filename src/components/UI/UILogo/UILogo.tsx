@@ -11,7 +11,7 @@ export const UILogo = ({
   className?: string;
 }) => {
   return (
-    <div className={cn("flex items-center gap-2.5", className)}>
+    <a href="/" className={cn("flex items-center gap-2.5", className)}>
       <svg
         width={size}
         height={size}
@@ -45,6 +45,6 @@ export const UILogo = ({
           Budgetly
         </span>
       )}
-    </div>
+    </a>
   );
 };
