@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Bell, LogOut } from 'lucide-react'
-import { Logo } from './UI/UILogo/UILogo'
+import { UILogo } from './UI/UILogo/UILogo'
 import { ThemeToggle } from './ThemeToggle'
 import { cn } from '../lib/cn'
 import { timeAgo } from '../lib/format'
@@ -43,7 +43,7 @@ export function AppBar({
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-bg/85 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-5">
-        <Logo />
+        <UILogo />
 
         <nav className="ml-4 hidden items-center gap-1 md:flex">
           {tabs.map((t) => (

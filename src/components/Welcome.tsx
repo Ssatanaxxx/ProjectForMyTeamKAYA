@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { motion } from 'motion/react'
-import { Logo } from './UI/UILogo/UILogo'
+import { UILogo } from './UI/UILogo/UILogo'
 
 // Приветственный экран после входа — вторая (и последняя) витринная анимация.
 // Показывается один раз, затем автоматически исчезает.
@@ -22,7 +22,7 @@ export function Welcome({ name, onDone }: { name: string; onDone: () => void }) 
         animate={{ scale: 1, opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       >
-        <Logo size={44} withWordmark={false} />
+        <UILogo size={44} withWordmark={false} />
       </motion.div>
       <motion.p
         className="mt-6 font-display text-2xl font-bold text-ink"

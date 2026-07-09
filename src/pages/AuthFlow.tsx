@@ -11,7 +11,7 @@ import {
   UserCog,
   Wallet,
 } from "lucide-react";
-import { Logo } from "../components/UI/UILogo/UILogo";
+import { UILogo } from "../components/UI/UILogo/UILogo";
 import { ThemeToggle } from "../components/ThemeToggle";
 import { UIButton, UICard, UICardBody, UIField, UIInput} from '../components/UI/index'
 
@@ -31,7 +31,7 @@ export function AuthFlow({ onDone }: { onDone: (s: Session) => void }) {
     <div className="relative min-h-svh overflow-hidden bg-bg">
       <BackdropGlow />
       <header className="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-5 py-5">
-        <Logo />
+        <UILogo />
         <ThemeToggle />
       </header>
 
